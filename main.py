@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from model import Product
+from utils import api_response
 
 app = FastAPI()
 
@@ -13,49 +14,27 @@ products = [
 @app.get("/products/{product_id}")
 def get_products(product_id:int):
     if len(products)==0:
-        return {
-            'data':None,
-            'message':"Products not found",
-            'success':False
-        }
+        return api_response(None,"Products not found",False)
     else:
         if product_id:
             for product in products:
                 if product["id"] == product_id:
-                    return{
-                    'data':product,
-                    'message':"Product fetched successfully",
-                    'success':True
-                }
+                   return api_response(product,"Product fetched successfully",True)
                 else:
-                    return{
-                    'data':None,
-                    'message':"Product not found",
-                    'success':False
-                    }
+                   return api_response(None,"Product not found",False)
         else:
-            return {
-                'data':products,
-                'message':"Products fetched successfully",
-                'success':True
-            }
+             return api_response(products,"Products fetched successfully",True)
+             
     
 @app.post("/products")  
 def add_product(product:Product):
-    for k,v in product:
+    for _,v in product:
         if v == None:
-            return {
-                "data":None,
-                "message":"All fields required",
-                "success":False
-            }
+            return api_response(None,"All fields required",False)
     else:
         products.append(product)
-        return {
-                "data":product,
-                "message":"Product added successfully",
-                "success":True
-        }
+        return api_response(products,"Product added successfully",True)
+       
         
 @app.put("/products/{product_id}")
 def update_product(product:Product,product_id:int):
@@ -63,31 +42,16 @@ def update_product(product:Product,product_id:int):
         print(prod)
         if prod['id'] == product_id:
             prod = product
-            return {
-                'data':product,
-                'message':"Product updated successfully",
-                'success':True
-            }
+            return api_response(product,"Product updated successfully",True)     
     else:
-        return {
-                'data':None,
-                'message':"Product not found",
-                'success':False
-        }
+        return api_response(None,"Product not found",False)
+        
             
 @app.delete("/products/{product_id}")
 def delete_product(product_id:int):
     for product in products:
         if product["id"] == product_id:
             del product
-            return {
-                "data":None,
-                "message":"Product delete successfully",
-                "success":True
-            }
+            return api_response(None,"Product delete successfully",True)
     else:
-        return {
-                "data":None,
-                "message":"Product not found",
-                "success":False
-            }
+        return api_response(None,"Product not found",False)
