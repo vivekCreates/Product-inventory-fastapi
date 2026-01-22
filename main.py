@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from model import Product
 
 app = FastAPI()
 
@@ -11,4 +12,17 @@ products = [
 
 @app.get("/")
 def get_products():
-    return {products:products}
+    if len(products)==0:
+        return {
+            'data':None,
+            'message':"Products not found",
+            'success':False
+        }
+    else:
+        return {
+            'data':products,
+            'message':"Products fetched successfully",
+            'success':True
+        }
+    
+    

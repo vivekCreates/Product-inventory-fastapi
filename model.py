@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class Prodcut(BaseModel):
+class Product(BaseModel):
     id: int
     name:str
     price:int
