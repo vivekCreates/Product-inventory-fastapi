@@ -60,3 +60,19 @@ def update_product(product:Product,product_id:int):
                 'success':False
         }
             
+@app.delete("/products/{product_id}")
+def delete_product(product_id:int):
+    for product in products:
+        if product["id"] == product_id:
+            del product
+            return {
+                "data":None,
+                "message":"Product delete successfully",
+                "success":True
+            }
+    else:
+        return {
+                "data":None,
+                "message":"Product not found",
+                "success":False
+            }
