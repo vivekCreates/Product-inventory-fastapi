@@ -10,8 +10,8 @@ products = [
     {'id':3,'name':"IPhone",'price':120000,'quantity':7}
 ]
 
-@app.get("/products")
-def get_products():
+@app.get("/products/{product_id}")
+def get_products(product_id:int):
     if len(products)==0:
         return {
             'data':None,
@@ -19,11 +19,26 @@ def get_products():
             'success':False
         }
     else:
-        return {
-            'data':products,
-            'message':"Products fetched successfully",
-            'success':True
-        }
+        if product_id:
+            for product in products:
+                if product["id"] == product_id:
+                    return{
+                    'data':product,
+                    'message':"Product fetched successfully",
+                    'success':True
+                }
+                else:
+                    return{
+                    'data':None,
+                    'message':"Product not found",
+                    'success':False
+                    }
+        else:
+            return {
+                'data':products,
+                'message':"Products fetched successfully",
+                'success':True
+            }
     
 @app.post("/products")  
 def add_product(product:Product):
