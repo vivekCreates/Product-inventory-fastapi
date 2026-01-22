@@ -41,3 +41,22 @@ def add_product(product:Product):
                 "message":"Product added successfully",
                 "success":True
         }
+        
+@app.put("/products/{product_id}")
+def update_product(product:Product,product_id:int):
+    for prod in products:
+        print(prod)
+        if prod['id'] == product_id:
+            prod = product
+            return {
+                'data':product,
+                'message':"Product updated successfully",
+                'success':True
+            }
+    else:
+        return {
+                'data':None,
+                'message':"Product not found",
+                'success':False
+        }
+            
